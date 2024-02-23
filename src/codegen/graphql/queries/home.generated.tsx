@@ -8,7 +8,17 @@ export type GetHomesQueryResponse = {
   __typename?: 'Query'
   homeCollection?: {
     __typename?: 'HomeCollection'
-    items: Array<{ __typename?: 'Home'; name?: string; address?: string }>
+    items: Array<{
+      __typename?: 'Home'
+      id: number
+      name?: string
+      city: string
+      state: string
+      photo: string | undefined
+      availableUnits: number
+      wifi: boolean
+      laundry: boolean
+    }>
   }
 }
 
@@ -16,8 +26,14 @@ export const GetHomesDocument = `
     query GetHomes {
   homeCollection {
     items {
+      id
       name
-      address
+      city
+      state
+      photo
+      availableUnits
+      wifi
+      laundry
     }
   }
 }

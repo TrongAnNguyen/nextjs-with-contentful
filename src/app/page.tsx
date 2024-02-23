@@ -1,9 +1,12 @@
 import Image from 'next/image'
 import Logo from '@/assets/logo.svg'
-import { housingLocations } from '@/constant'
 import Link from 'next/link'
+import { useGetHomesQuery } from '@/codegen/graphql/queries/home.generated'
 
 export default async function Home() {
+  const housingLocations = await useGetHomesQuery.fetcher()()
+  console.log('data.homeCollection?.items', housingLocations.homeCollection?.items)
+
   return (
     <main>
       <a>
@@ -21,7 +24,7 @@ export default async function Home() {
         </form>
       </section>
       <section className="results">
-        {housingLocations.map((housingLocation, index) => (
+        {housingLocations.homeCollection?.items.map((housingLocation, index) => (
           <section className="listing" key={index}>
             <img
               className="listing-photo"

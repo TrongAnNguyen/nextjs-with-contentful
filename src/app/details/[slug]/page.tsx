@@ -28,8 +28,8 @@ const HomeDetail: React.FC<HomeDetailProps> = ({ params }) => {
         <h2 className="section-heading">About this housing location</h2>
         <ul>
           <li>Units available: {housingLocation?.availableUnits || 0}</li>
-          <li>Does this location have wifi: {housingLocation?.wifi || false}</li>
-          <li>Does this location have laundry: {housingLocation?.laundry || false}</li>
+          <li>Does this location have wifi: {housingLocation?.wifi ? 'yes' : 'no'}</li>
+          <li>Does this location have laundry: {housingLocation?.laundry ? 'yes' : 'no'}</li>
         </ul>
       </section>
       <section className="listing-apply">

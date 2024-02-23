@@ -1,8 +1,14 @@
 query GetHomes {
   homeCollection {
     items {
+      id
       name
-      address
+      city
+      state
+      photo
+      availableUnits
+      wifi
+      laundry
     }
   }
 }
