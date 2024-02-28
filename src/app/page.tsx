@@ -5,7 +5,6 @@ import { useGetHomesQuery } from '@/codegen/graphql/queries/home.generated'
 
 export default async function Home() {
   const housingLocations = await useGetHomesQuery.fetcher()()
-  console.log('data.homeCollection?.items', housingLocations.homeCollection?.items)
 
   return (
     <main>
@@ -28,14 +27,14 @@ export default async function Home() {
           <section className="listing" key={index}>
             <img
               className="listing-photo"
-              src={housingLocation.photo}
+              src={housingLocation.photo?.url || ''}
               alt={`Exterior photo of ${housingLocation.name}`}
             />
             <h2 className="listing-heading">{housingLocation.name}</h2>
             <p className="listing-location">
               {housingLocation.city}, {housingLocation.state}
             </p>
-            <Link href={`/details/${housingLocation.id}`}>Learn more</Link>
+            <Link href={`/details/${housingLocation.sys.id}`}>Learn more</Link>
           </section>
         ))}
       </section>

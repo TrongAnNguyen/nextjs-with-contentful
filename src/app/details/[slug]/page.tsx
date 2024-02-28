@@ -1,4 +1,4 @@
-import { housingLocations } from '@/constant'
+import { useGetHomeDetailQuery } from '@/codegen/graphql/queries/home.generated'
 import React from 'react'
 
 type HomeDetailProps = {
@@ -7,29 +7,23 @@ type HomeDetailProps = {
   }
 }
 
-const HomeDetail: React.FC<HomeDetailProps> = ({ params }) => {
-  console.log('params', params.slug)
-  const housingLocation = housingLocations.find((housing) => housing.id === Number(params.slug))
+const HomeDetail: React.FC<HomeDetailProps> = async ({ params }) => {
+  const housingLocation = await useGetHomeDetailQuery.fetcher({ id: params.slug })()
+  const { photo, name, city, state, availableUnits, wifi, laundry } = housingLocation?.home || {}
 
   return (
     <article>
-      <img
-        className="listing-photo"
-        src={housingLocation?.photo || ''}
-        alt={`Exterior photo of ${housingLocation?.name}`}
-      />
+      <img className="listing-photo" src={photo?.url || ''} alt={`Exterior photo of ${name}`} />
       <section className="listing-description">
-        <h2 className="listing-heading">{housingLocation?.name || ''} </h2>
-        <p className="listing-location">
-          {`${housingLocation?.city || ''} - ${housingLocation?.state || ''}`}
-        </p>
+        <h2 className="listing-heading">{name || ''} </h2>
+        <p className="listing-location">{`${city || ''} - ${state || ''}`}</p>
       </section>
       <section className="listing-features">
         <h2 className="section-heading">About this housing location</h2>
         <ul>
-          <li>Units available: {housingLocation?.availableUnits || 0}</li>
-          <li>Does this location have wifi: {housingLocation?.wifi ? 'yes' : 'no'}</li>
-          <li>Does this location have laundry: {housingLocation?.laundry ? 'yes' : 'no'}</li>
+          <li>Units available: {availableUnits || 0}</li>
+          <li>Does this location have wifi: {wifi ? 'yes' : 'no'}</li>
+          <li>Does this location have laundry: {laundry ? 'yes' : 'no'}</li>
         </ul>
       </section>
       <section className="listing-apply">

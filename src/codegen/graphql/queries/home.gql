@@ -1,14 +1,29 @@
 query GetHomes {
   homeCollection {
     items {
-      id
+      sys {
+        id
+      }
       name
       city
       state
-      photo
-      availableUnits
-      wifi
-      laundry
+      photo {
+        url
+      }
+    }
+  }
+}
+
+query GetHomeDetail($id: String!) {
+  home(id: $id) {
+    name
+    city
+    state
+    laundry
+    availableUnits
+    wifi
+    photo {
+      url
     }
   }
 }

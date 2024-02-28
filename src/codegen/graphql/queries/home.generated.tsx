@@ -10,15 +10,30 @@ export type GetHomesQueryResponse = {
     __typename?: 'HomeCollection'
     items: Array<{
       __typename?: 'Home'
-      id: number
       name?: string
-      city: string
-      state: string
-      photo: string | undefined
-      availableUnits: number
-      wifi: boolean
-      laundry: boolean
+      city?: string
+      state?: string
+      sys: { __typename?: 'Sys'; id: string }
+      photo?: { __typename?: 'Asset'; url?: string }
     }>
+  }
+}
+
+export type GetHomeDetailQueryVariables = Types.Exact<{
+  id: Types.Scalars['String']['input']
+}>
+
+export type GetHomeDetailQueryResponse = {
+  __typename?: 'Query'
+  home?: {
+    __typename?: 'Home'
+    name?: string
+    city?: string
+    state?: string
+    laundry?: boolean
+    availableUnits?: number
+    wifi?: boolean
+    photo?: { __typename?: 'Asset'; url?: string }
   }
 }
 
@@ -26,14 +41,15 @@ export const GetHomesDocument = `
     query GetHomes {
   homeCollection {
     items {
-      id
+      sys {
+        id
+      }
       name
       city
       state
-      photo
-      availableUnits
-      wifi
-      laundry
+      photo {
+        url
+      }
     }
   }
 }
@@ -52,3 +68,44 @@ useGetHomesQuery.getKey = (variables?: GetHomesQueryVariables) =>
   variables === undefined ? ['GetHomes'] : ['GetHomes', variables]
 useGetHomesQuery.fetcher = (variables?: GetHomesQueryVariables, options?: RequestInit['headers']) =>
   customFetcher<GetHomesQueryResponse, GetHomesQueryVariables>(GetHomesDocument, variables, options)
+export const GetHomeDetailDocument = `
+    query GetHomeDetail($id: String!) {
+  home(id: $id) {
+    name
+    city
+    state
+    laundry
+    availableUnits
+    wifi
+    photo {
+      url
+    }
+  }
+}
+    `
+export const useGetHomeDetailQuery = <TData = GetHomeDetailQueryResponse, TError = unknown>(
+  variables: GetHomeDetailQueryVariables,
+  options?: UseQueryOptions<GetHomeDetailQueryResponse, TError, TData>,
+) =>
+  useQuery<GetHomeDetailQueryResponse, TError, TData>(
+    ['GetHomeDetail', variables],
+    customFetcher<GetHomeDetailQueryResponse, GetHomeDetailQueryVariables>(
+      GetHomeDetailDocument,
+      variables,
+    ),
+    options,
+  )
+
+useGetHomeDetailQuery.getKey = (variables: GetHomeDetailQueryVariables) => [
+  'GetHomeDetail',
+  variables,
+]
+useGetHomeDetailQuery.fetcher = (
+  variables: GetHomeDetailQueryVariables,
+  options?: RequestInit['headers'],
+) =>
+  customFetcher<GetHomeDetailQueryResponse, GetHomeDetailQueryVariables>(
+    GetHomeDetailDocument,
+    variables,
+    options,
+  )
