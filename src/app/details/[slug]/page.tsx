@@ -1,4 +1,5 @@
 import { useGetHomeDetailQuery } from '@/codegen/graphql/queries/home.generated'
+import Image from 'next/image'
 import React from 'react'
 
 type HomeDetailProps = {
@@ -13,7 +14,14 @@ const HomeDetail: React.FC<HomeDetailProps> = async ({ params }) => {
 
   return (
     <article>
-      <img className="listing-photo" src={photo?.url || ''} alt={`Exterior photo of ${name}`} />
+      <Image
+        className="listing-photo"
+        src={photo?.url || ''}
+        alt={`Exterior photo of ${name}`}
+        width={0}
+        height={0}
+        sizes="100vw"
+      />
       <section className="listing-description">
         <h2 className="listing-heading">{name || ''} </h2>
         <p className="listing-location">{`${city || ''} - ${state || ''}`}</p>

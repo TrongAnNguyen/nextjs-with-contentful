@@ -25,10 +25,13 @@ export default async function Home() {
       <section className="results">
         {housingLocations.homeCollection?.items.map((housingLocation, index) => (
           <section className="listing" key={index}>
-            <img
+            <Image
               className="listing-photo"
               src={housingLocation.photo?.url || ''}
               alt={`Exterior photo of ${housingLocation.name}`}
+              width={0}
+              height={0}
+              sizes="100vw"
             />
             <h2 className="listing-heading">{housingLocation.name}</h2>
             <p className="listing-location">
